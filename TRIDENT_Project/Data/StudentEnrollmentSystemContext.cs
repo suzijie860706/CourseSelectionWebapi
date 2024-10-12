@@ -24,7 +24,6 @@ namespace TRIDENT_Project.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured) { }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -40,17 +39,22 @@ namespace TRIDENT_Project.Data
                 entity.Property(e => e.CourseName)
                     .HasMaxLength(10)
                     .HasColumnName("courseName")
-                    .IsFixedLength();
+                    .IsFixedLength()
+                    .HasComment("課程名稱");
 
                 entity.Property(e => e.CreatedTime)
                     .HasColumnType("datetime")
-                    .HasColumnName("createdTime");
+                    .HasColumnName("createdTime")
+                    .HasComment("課程建立時間");
 
-                entity.Property(e => e.ProfessorId).HasColumnName("professorId");
+                entity.Property(e => e.ProfessorId)
+                    .HasColumnName("professorId")
+                    .HasComment("授課教授Id");
 
                 entity.Property(e => e.UpdatedTime)
                     .HasColumnType("datetime")
-                    .HasColumnName("updatedTime");
+                    .HasColumnName("updatedTime")
+                    .HasComment("課程更新時間");
 
                 entity.HasOne(d => d.Professor)
                     .WithMany(p => p.Courses)
