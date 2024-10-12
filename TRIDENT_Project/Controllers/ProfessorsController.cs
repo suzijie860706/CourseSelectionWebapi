@@ -67,7 +67,7 @@ namespace TRIDENT_Project.Controllers
         /// <param name="professor"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Professor>> PostProfessor(ProfessorViewModel professor)
+        public async Task<ActionResult<Professor>> PostProfessor(ProfessorParamenter professor)
         {
             //if (_context.Professors == null)
             //{

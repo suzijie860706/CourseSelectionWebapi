@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using TRIDENT_Project.Models;
 
 namespace TRIDENT_Project.ViewModel
 {
-    [ModelMetadataType(typeof(IProfessorMetaData))]
-    public partial class ProfessorViewModel
+    public partial class ProfessorParamenter
     {
         /// <summary>
         /// 唯一識別碼
