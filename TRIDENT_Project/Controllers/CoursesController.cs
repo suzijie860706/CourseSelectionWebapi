@@ -27,7 +27,6 @@ namespace TRIDENT_Project.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Course>), 200)]
-        [ProducesResponseType(204)]
         public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
         {
             return await _context.Courses.ToListAsync();

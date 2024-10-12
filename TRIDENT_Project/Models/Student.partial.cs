@@ -1,23 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace TRIDENT_Project.Models
 {
-    
-    public partial class Professor
-    {
-        public Professor()
-        {
-            Courses = new HashSet<Course>();
-        }
+    [ModelMetadataType(typeof(StudentMetaData))]
+    public partial class Student { }
 
+    internal partial class StudentMetaData
+    {
         /// <summary>
         /// 唯一識別碼
         /// </summary>
+        [Key]
+        [JsonIgnore]
         public int Id { get; set; }
         /// <summary>
-        /// 教授姓名
+        /// 學生姓名
         /// </summary>
         public string Name { get; set; } = null!;
         /// <summary>
@@ -27,12 +28,15 @@ namespace TRIDENT_Project.Models
         /// <summary>
         /// 帳號建立時間
         /// </summary>
+        [JsonIgnore]
         public DateTime CreatedTime { get; set; }
         /// <summary>
         /// 帳號更新時間
         /// </summary>
+        [JsonIgnore]
         public DateTime UpdatedTime { get; set; }
 
-        public virtual ICollection<Course> Courses { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<StudentCourse> StudentCourses { get; set; }
     }
 }
