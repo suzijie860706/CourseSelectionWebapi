@@ -70,9 +70,6 @@ namespace TRIDENT_Project.Services
             return count > 0;
         }
 
-
-
-
         /// <summary>
         /// 建立新課程
         /// </summary>
