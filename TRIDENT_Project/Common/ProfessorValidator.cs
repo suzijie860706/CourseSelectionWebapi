@@ -10,7 +10,7 @@ using TRIDENT_Project.Models;
 namespace TRIDENT_Project.Common
 {
     /// <summary>
-    /// Card Parameter 的驗證器
+    /// Parameter 的驗證器
     /// </summary>
     public class ProfessorValidator : AbstractValidator<Professor>
     {

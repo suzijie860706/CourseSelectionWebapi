@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TRIDENT_Project.Data;
 using TRIDENT_Project.Models;
+using TRIDENT_Project.Services;
 using TRIDENT_Project.ViewModel;
 
 namespace TRIDENT_Project.Controllers
@@ -15,11 +12,14 @@ namespace TRIDENT_Project.Controllers
     [ApiController]
     public class ProfessorsController : ControllerBase
     {
-        private readonly StudentEnrollmentSystemContext _context;
+        private readonly IProfessorsService _professorsService;
+        private readonly ICourseService _courseService;
 
-        public ProfessorsController(StudentEnrollmentSystemContext context)
+
+        public ProfessorsController(IProfessorsService professorsService, ICourseService courseService)
         {
-            _context = context;
+            _professorsService = professorsService;
+            _courseService = courseService;
         }
 
         /// <summary>
@@ -30,11 +30,7 @@ namespace TRIDENT_Project.Controllers
         [ProducesResponseType(typeof(IEnumerable<Professor>), 200)]
         public async Task<ActionResult<IEnumerable<Professor>>> GetProfessors()
         {
-          if (_context.Professors == null)
-          {
-              return NotFound();
-          }
-            return await _context.Professors.ToListAsync();
+            return Ok(await _professorsService.GetAllProfessorsAsync());
         }
 
         /// <summary>
@@ -45,20 +41,11 @@ namespace TRIDENT_Project.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Professor), 200)]
         [ProducesResponseType(204)]
-        public async Task<ActionResult<Professor>> GetProfessor(int id)
+        public async Task<ActionResult<Course>> GetCoursesByProfessorId(int id)
         {
-          if (_context.Professors == null)
-          {
-              return NotFound();
-          }
-            var professor = await _context.Professors.FindAsync(id);
-
-            if (professor == null)
-            {
-                return NotFound();
-            }
-
-            return professor;
+            IEnumerable<Course> professorCourse = await _courseService.GetCoursesByProfessorIdAsync(id);
+            if (professorCourse == null) return NoContent();
+            return Ok(professorCourse);
         }
 
         /// <summary>
@@ -69,19 +56,9 @@ namespace TRIDENT_Project.Controllers
         [HttpPost]
         public async Task<ActionResult<Professor>> PostProfessor(ProfessorParamenter professor)
         {
-            //if (_context.Professors == null)
-            //{
-            //    return Problem("Entity set 'StudentEnrollmentSystemContext.Professors'  is null.");
-            //}
-            //  _context.Professors.Add(professor);
-            //  await _context.SaveChangesAsync();
+            Professor professor1 = await _professorsService.CreateProfessorAsync(professor);
 
-            //  return CreatedAtAction("GetProfessor", new { id = professor.Id }, professor);
-            return Ok();
-        }
-        private bool ProfessorExists(int id)
-        {
-            return (_context.Professors?.Any(e => e.Id == id)).GetValueOrDefault();
+            return CreatedAtAction("GetCourse", new { id = professor1.Id }, professor);
         }
     }
 }

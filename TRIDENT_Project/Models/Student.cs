@@ -25,11 +25,11 @@ namespace TRIDENT_Project.Models
         /// <summary>
         /// 帳號建立時間
         /// </summary>
-        public DateTime CreatedTime { get; set; }
+        public DateTime CreatedDate { get; set; }
         /// <summary>
         /// 帳號更新時間
         /// </summary>
-        public DateTime UpdatedTime { get; set; }
+        public DateTime UpdatedDate { get; set; }
 
         public virtual ICollection<StudentCourse> StudentCourses { get; set; }
     }

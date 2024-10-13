@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace TRIDENT_Project.Models
 {
-    
     public partial class Professor
     {
         public Professor()
@@ -27,11 +25,11 @@ namespace TRIDENT_Project.Models
         /// <summary>
         /// 帳號建立時間
         /// </summary>
-        public DateTime CreatedTime { get; set; }
+        public DateTime CreatedDate { get; set; }
         /// <summary>
         /// 帳號更新時間
         /// </summary>
-        public DateTime UpdatedTime { get; set; }
+        public DateTime UpdatedDate { get; set; }
 
         public virtual ICollection<Course> Courses { get; set; }
     }

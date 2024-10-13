@@ -22,10 +22,6 @@ namespace TRIDENT_Project.Data
         public virtual DbSet<Student> Students { get; set; } = null!;
         public virtual DbSet<StudentCourse> StudentCourses { get; set; } = null!;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Course>(entity =>
@@ -42,18 +38,18 @@ namespace TRIDENT_Project.Data
                     .IsFixedLength()
                     .HasComment("課程名稱");
 
-                entity.Property(e => e.CreatedTime)
+                entity.Property(e => e.CreatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("createdTime")
+                    .HasColumnName("createdDate")
                     .HasComment("課程建立時間");
 
                 entity.Property(e => e.ProfessorId)
                     .HasColumnName("professorId")
                     .HasComment("授課教授Id");
 
-                entity.Property(e => e.UpdatedTime)
+                entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("updatedTime")
+                    .HasColumnName("updatedDate")
                     .HasComment("課程更新時間");
 
                 entity.HasOne(d => d.Professor)
@@ -70,9 +66,9 @@ namespace TRIDENT_Project.Data
                     .HasColumnName("id")
                     .HasComment("唯一識別碼");
 
-                entity.Property(e => e.CreatedTime)
+                entity.Property(e => e.CreatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("createdTime")
+                    .HasColumnName("createdDate")
                     .HasComment("帳號建立時間");
 
                 entity.Property(e => e.Email)
@@ -85,9 +81,9 @@ namespace TRIDENT_Project.Data
                     .HasColumnName("name")
                     .HasComment("教授姓名");
 
-                entity.Property(e => e.UpdatedTime)
+                entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("updatedTime")
+                    .HasColumnName("updatedDate")
                     .HasComment("帳號更新時間");
             });
 
@@ -99,9 +95,9 @@ namespace TRIDENT_Project.Data
                     .HasColumnName("id")
                     .HasComment("唯一識別碼");
 
-                entity.Property(e => e.CreatedTime)
+                entity.Property(e => e.CreatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("createdTime")
+                    .HasColumnName("createdDate")
                     .HasComment("帳號建立時間");
 
                 entity.Property(e => e.Email)
@@ -114,9 +110,9 @@ namespace TRIDENT_Project.Data
                     .HasColumnName("name")
                     .HasComment("學生姓名");
 
-                entity.Property(e => e.UpdatedTime)
+                entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("updatedTime")
+                    .HasColumnName("updatedDate")
                     .HasComment("帳號更新時間");
             });
 

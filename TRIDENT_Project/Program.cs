@@ -1,8 +1,12 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
 using TRIDENT_Project.Data;
+using TRIDENT_Project.Models;
+using TRIDENT_Project.Repositories;
+using TRIDENT_Project.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +17,14 @@ builder.Services.AddControllers();
 //資料庫
 builder.Services.AddDbContext<StudentEnrollmentSystemContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("StudentEnrollmentSystem")));
+
+//Business Layer
+builder.Services.AddScoped<ICRUDRepository<Course>, CRUDRepository<Course, StudentEnrollmentSystemContext>>();
+builder.Services.AddScoped<ICRUDRepository<Professor>, CRUDRepository<Professor, StudentEnrollmentSystemContext>>();
+
+//Controller Layer
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IProfessorsService, ProfessorsService>();
 
 #region Swagger
 builder.Services.AddSwaggerGen(options =>
@@ -51,7 +63,14 @@ Some useful links:
 builder.Services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
 #endregion
 
+//AutoMapper DI Profile Class
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 var app = builder.Build();
+
+// 驗證 AutoMapper 配置
+var mapper = app.Services.GetRequiredService<IMapper>();
+mapper.ConfigurationProvider.AssertConfigurationIsValid(); 
 
 // Configure the HTTP request pipeline.
 

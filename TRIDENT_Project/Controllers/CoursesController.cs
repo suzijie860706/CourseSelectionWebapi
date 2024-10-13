@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TRIDENT_Project.Data;
 using TRIDENT_Project.Models;
+using TRIDENT_Project.Paramenters;
+using TRIDENT_Project.Services;
 
 namespace TRIDENT_Project.Controllers
 {
@@ -14,11 +12,11 @@ namespace TRIDENT_Project.Controllers
     [ApiController]
     public class CoursesController : ControllerBase
     {
-        private readonly StudentEnrollmentSystemContext _context;
+        private readonly ICourseService _courseService;
 
-        public CoursesController(StudentEnrollmentSystemContext context)
+        public CoursesController(ICourseService courseService)
         {
-            _context = context;
+            _courseService = courseService;
         }
 
         /// <summary>
@@ -29,7 +27,21 @@ namespace TRIDENT_Project.Controllers
         [ProducesResponseType(typeof(IEnumerable<Course>), 200)]
         public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
         {
-            return await _context.Courses.ToListAsync();
+            return Ok(await _courseService.GetAllCoursesAsync());
+        }
+
+        /// <summary>
+        /// 取得特定課程
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(IEnumerable<Course>), 200)]
+        [ProducesResponseType(204)]
+        public async Task<ActionResult<IEnumerable<Course>>> GetCourse(int id)
+        {
+            Course? courses = await _courseService.GetCoursesByIdAsync(id);
+            if (courses == null) return NoContent();
+            return Ok(courses);
         }
 
 
@@ -45,27 +57,21 @@ namespace TRIDENT_Project.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> PutCourse(int id, Course course)
         {
-            if (id != course.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(course).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                var result = await _courseService.UpdateCourseAsync(id, course);
+                if (!result)
+                {
+                    return Problem("Update Failed");
+                }
             }
-            catch (DbUpdateConcurrencyException)
+            catch (KeyNotFoundException ex)
             {
-                if (!await CourseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
             }
 
             return NoContent();
@@ -74,30 +80,14 @@ namespace TRIDENT_Project.Controllers
         /// <summary>
         /// 建立新課程
         /// </summary>
-        /// <param name="course"></param>
+        /// <param name="courseParamenter"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Course>> PostCourse(Course course)
+        public async Task<ActionResult<Course>> PostCourse(CourseParamenter courseParamenter)
         {
-            try
-            {
-                _context.Courses.Add(course);
-                await _context.SaveChangesAsync();
+            Course course = await _courseService.CreateCoursesAsync(courseParamenter);
 
-                return CreatedAtAction("GetCourse", new { id = course.Id }, course);
-            }
-            catch (DbUpdateException)
-            {
-                if (await CourseExists(course.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            
+            return CreatedAtAction("GetCourse", new { id = course.Id }, course);
         }
 
         /// <summary>
@@ -110,22 +100,10 @@ namespace TRIDENT_Project.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> DeleteCourse(int id)
         {
-            var course = await _context.Courses.FindAsync(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
+            bool succ = await _courseService.DeleteCoursesAsync(id);
 
-            _context.Courses.Remove(course);
-            await _context.SaveChangesAsync();
-
+            if (!succ) return NotFound();
             return NoContent();
-        }
-
-        private async Task<bool> CourseExists(int id)
-        {
-            if (_context.Courses == null) return false;
-            return await _context.Courses.AnyAsync(e => e.Id == id) ;
         }
     }
 }
