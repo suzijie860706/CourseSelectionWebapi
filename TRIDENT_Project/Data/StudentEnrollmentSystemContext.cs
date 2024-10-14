@@ -22,6 +22,10 @@ namespace TRIDENT_Project.Data
         public virtual DbSet<Student> Students { get; set; } = null!;
         public virtual DbSet<StudentCourse> StudentCourses { get; set; } = null!;
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Course>(entity =>
@@ -43,9 +47,18 @@ namespace TRIDENT_Project.Data
                     .HasColumnName("createdDate")
                     .HasComment("課程建立時間");
 
+                entity.Property(e => e.Description)
+                    .HasMaxLength(10)
+                    .HasColumnName("description")
+                    .IsFixedLength();
+
+                entity.Property(e => e.EndTime).HasColumnName("endTime");
+
                 entity.Property(e => e.ProfessorId)
                     .HasColumnName("professorId")
                     .HasComment("授課教授Id");
+
+                entity.Property(e => e.StartTime).HasColumnName("startTime");
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")

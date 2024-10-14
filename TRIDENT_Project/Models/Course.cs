@@ -18,6 +18,7 @@ namespace TRIDENT_Project.Models
         /// 課程名稱
         /// </summary>
         public string? CourseName { get; set; }
+        public string? Description { get; set; }
         /// <summary>
         /// 授課教授Id
         /// </summary>
@@ -30,6 +31,8 @@ namespace TRIDENT_Project.Models
         /// 課程更新時間
         /// </summary>
         public DateTime? UpdatedDate { get; set; }
+        public DateTime? StartTime { get; set; }
+        public TimeSpan? EndTime { get; set; }
 
         public virtual Professor? Professor { get; set; }
         public virtual ICollection<StudentCourse> StudentCourses { get; set; }

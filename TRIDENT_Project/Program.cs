@@ -21,10 +21,15 @@ builder.Services.AddDbContext<StudentEnrollmentSystemContext>(option =>
 //Business Layer
 builder.Services.AddScoped<ICRUDRepository<Course>, CRUDRepository<Course, StudentEnrollmentSystemContext>>();
 builder.Services.AddScoped<ICRUDRepository<Professor>, CRUDRepository<Professor, StudentEnrollmentSystemContext>>();
+builder.Services.AddScoped<IProfessorRepository, ProfessorRepository>();
+builder.Services.AddTransient<IValidationService, ValidationService>();
 
 //Controller Layer
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IProfessorsService, ProfessorsService>();
+
+//Repo Layer
+
 
 #region Swagger
 builder.Services.AddSwaggerGen(options =>
@@ -70,7 +75,7 @@ var app = builder.Build();
 
 // ≈Á√“ AutoMapper ∞t∏m
 var mapper = app.Services.GetRequiredService<IMapper>();
-mapper.ConfigurationProvider.AssertConfigurationIsValid(); 
+mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
 // Configure the HTTP request pipeline.
 

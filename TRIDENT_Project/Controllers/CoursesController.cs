@@ -83,6 +83,7 @@ namespace TRIDENT_Project.Controllers
         /// <param name="courseParamenter"></param>
         /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(typeof(Course), 201)]
         public async Task<ActionResult<Course>> PostCourse(CourseParamenter courseParamenter)
         {
             Course course = await _courseService.CreateCoursesAsync(courseParamenter);

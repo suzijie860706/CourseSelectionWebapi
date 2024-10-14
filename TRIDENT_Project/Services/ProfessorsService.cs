@@ -3,18 +3,21 @@ using TRIDENT_Project.Data;
 using TRIDENT_Project.Models;
 using TRIDENT_Project.Repositories;
 using TRIDENT_Project.ViewModel;
+using TRIDENT_Project.ViewModels;
 
 namespace TRIDENT_Project.Services
 {
     public class ProfessorsService : IProfessorsService
     {
         private readonly ICRUDRepository<Professor> _repository;
+        private readonly IProfessorRepository _professorRepository;
         private IMapper _mapper;
 
-        public ProfessorsService(ICRUDRepository<Professor> repository, IMapper mapper) 
+        public ProfessorsService(ICRUDRepository<Professor> repository, IMapper mapper, IProfessorRepository professorRepository) 
         {
             _repository = repository;
             _mapper = mapper;
+            _professorRepository = professorRepository;
         }
 
 
@@ -25,6 +28,18 @@ namespace TRIDENT_Project.Services
         public async Task<IEnumerable<Professor>> GetAllProfessorsAsync()
         {
             return await _repository.FindAsync(_ => true);
+        }
+
+        /// <summary>
+        /// 授課講師所開課程列表
+        /// </summary>
+        /// <param name="professorId"></param>
+        /// <returns></returns>
+        public async Task<ProfessorViewModel?> GetProfessorsWithCourseAsync(int professorId)
+        {
+            Professor? professor = await _professorRepository.GetProfessorsWithCourseAsync(professorId);
+            ProfessorViewModel? professorViewModel = _mapper.Map<ProfessorViewModel>(professor);
+            return professorViewModel;
         }
 
         /// <summary>

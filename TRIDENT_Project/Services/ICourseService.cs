@@ -20,13 +20,6 @@ namespace TRIDENT_Project.Services
         Task<Course?> GetCoursesByIdAsync(int id);
 
         /// <summary>
-        /// 授課講師所開課程列表
-        /// </summary>
-        /// <param name="professorId"></param>
-        /// <returns></returns>
-        Task<IEnumerable<Course>> GetCoursesByProfessorIdAsync(int professorId);
-
-        /// <summary>
         /// 更新課程內容
         /// </summary>
         /// <param name="id"></param>

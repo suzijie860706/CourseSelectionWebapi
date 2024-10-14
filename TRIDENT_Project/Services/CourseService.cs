@@ -38,16 +38,6 @@ namespace TRIDENT_Project.Services
         }
 
         /// <summary>
-        /// 授課講師所開課程列表
-        /// </summary>
-        /// <param name="professorId"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<Course>> GetCoursesByProfessorIdAsync(int professorId)
-        {
-            return await _repository.FindAsync(x => x.ProfessorId == professorId);
-        }
-
-        /// <summary>
         /// 更新課程內容
         /// </summary>
         /// <param name="id">課程ID</param>

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TRIDENT_Project.Models;
 using TRIDENT_Project.Services;
 using TRIDENT_Project.ViewModel;
+using TRIDENT_Project.ViewModels;
 
 namespace TRIDENT_Project.Controllers
 {
@@ -39,11 +37,11 @@ namespace TRIDENT_Project.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(Professor), 200)]
+        [ProducesResponseType(typeof(ProfessorViewModel), 200)]
         [ProducesResponseType(204)]
-        public async Task<ActionResult<Course>> GetCoursesByProfessorId(int id)
+        public async Task<ActionResult<ProfessorViewModel>> GetCoursesByProfessorId(int id)
         {
-            IEnumerable<Course> professorCourse = await _courseService.GetCoursesByProfessorIdAsync(id);
+            ProfessorViewModel? professorCourse = await _professorsService.GetProfessorsWithCourseAsync(id);
             if (professorCourse == null) return NoContent();
             return Ok(professorCourse);
         }
@@ -51,14 +49,14 @@ namespace TRIDENT_Project.Controllers
         /// <summary>
         /// 建立新講師
         /// </summary>
-        /// <param name="professor"></param>
+        /// <param name="professorParamenter"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Professor>> PostProfessor(ProfessorParamenter professor)
+        [ProducesResponseType(typeof(Professor), 201)]
+        public async Task<ActionResult<Professor>> PostProfessor(ProfessorParamenter professorParamenter)
         {
-            Professor professor1 = await _professorsService.CreateProfessorAsync(professor);
-
-            return CreatedAtAction("GetCourse", new { id = professor1.Id }, professor);
+            Professor professor = await _professorsService.CreateProfessorAsync(professorParamenter);
+            return CreatedAtAction("GetCoursesByProfessorId", new { id = professor.Id }, professor);
         }
     }
 }

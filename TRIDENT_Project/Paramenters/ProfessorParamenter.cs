@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using TRIDENT_Project.Models;
-using TRIDENT_Project.Extensions;
+using TRIDENT_Project.Attributes;
 
 namespace TRIDENT_Project.ViewModel
 {
@@ -19,6 +19,9 @@ namespace TRIDENT_Project.ViewModel
         /// <summary>
         /// 電子郵件地址
         /// </summary>
+        [Required(ErrorMessage = "請輸入Email地址")]
+        [EmailValidate(ErrorMessage = "Email格式錯誤")]
+        [EmailLength(minimumLength: 6, maximumLength: 30)]
         public string? Email { get; set; }
     }
 
@@ -30,11 +33,12 @@ namespace TRIDENT_Project.ViewModel
         public ProfessorParamenterProfile()
         {
             CreateMap<ProfessorParamenter, Professor>()
-                .IgnoreAllUnmapped()
+                .ForMember(u => u.Id, opt => opt.Ignore())
                 .ForMember(u => u.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(u => u.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(u => u.UpdatedDate, opt => opt.MapFrom(_ => DateTime.Now))
-                .ForMember(u => u.CreatedDate, opt => opt.MapFrom(_ => DateTime.Now));
+                .ForMember(u => u.CreatedDate, opt => opt.MapFrom(_ => DateTime.Now))
+                .ForMember(u => u.Courses, opt => opt.Ignore());
         }
     }
 }
