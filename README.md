@@ -1,16 +1,16 @@
 # TRIDENT_Project
-專案描述:設計選課系統API與相應資料庫和單元測試，資料庫的結構和資料可以透過StudentEnrollmentSystem.sql取得，Api可以在SwaggerUI中直接測試。
+專案描述:設計選課系統API與相應資料庫和單元測試，資料庫的結構和資料可以透過StudentEnrollmentSystem.sql取得，Api可以在SwaggerUI中直接測試。   
 
 專案環境:
-開發工具：VS 2022
-使用語言：C#
-後端框架：ASP.NET CORE 6 WEB API
-ORM框架：EF CORE
-資料庫：SQL Server
-單元測試：NUnit
+開發工具：VS 2022   
+使用語言：C#   
+後端框架：ASP.NET CORE 6 WEB API   
+ORM框架：EF CORE   
+資料庫：SQL Server   
+單元測試：NUnit   
 
-流程:
-首先以DB First為目標，先預訂規格，然後將資料表實作，再使用ORM工具將資料表Mapping到Api專案中，製作單元測試，接著開始設計api，最後單元測試通過後，加上swagger完成
+流程:   
+首先以DB First為目標，先預訂規格，然後將資料表實作，再使用ORM工具將資料表Mapping到Api專案中，製作單元測試，接著開始設計api，最後單元測試通過後，加上swagger完成   
 
 
 # 資料庫 StudentEnrollmentSystem
@@ -91,16 +91,16 @@ ORM框架：EF CORE
 
 
 
-目前進度API開發和單元測試，Swagger文檔皆設計完成，對於人員登入、課程時間等，因另外還有設計想法，尚未完成。
-## 尚未實作的部分
+目前進度API開發和單元測試，Swagger文檔皆設計完成，對於人員登入、課程時間等，因另外還有設計想法，尚未完成。   
+## 尚未實作的部分   
 人員登入的部分，預計將使用JWT來取得和授權Token，這部分將參考之前的Sideo Project [Jackmazon_backend](https://github.com/suzijie860706/Jackmazon_backend) 實現
-課程時間將會另外設計資料表CourseSchedules，來儲存當建立課程時，可以設定課程的上、下課時間，每周的上課日
-資料表預定
-CREATE TABLE CourseSchedules (
-    ScheduleID INT PRIMARY KEY IDENTITY,
-    CourseID INT FOREIGN KEY REFERENCES Courses(CourseID),
-    DayOfWeek TINYINT, -- 1 = 星期一, 2 = 星期二, 以此類推
-    StartTime TIME,
-    EndTime TIME,
-    CONSTRAINT UQ_CourseSchedule UNIQUE (CourseID, DayOfWeek)
-);
+課程時間將會另外設計資料表CourseSchedules，來儲存當建立課程時，可以設定課程的上、下課時間，每周的上課日   
+資料表預定   
+CREATE TABLE CourseSchedules (   
+    ScheduleID INT PRIMARY KEY IDENTITY,   
+    CourseID INT FOREIGN KEY REFERENCES Courses(CourseID),   
+    DayOfWeek TINYINT, -- 1 = 星期一, 2 = 星期二, 以此類推   
+    StartTime TIME,   
+    EndTime TIME,   
+    CONSTRAINT UQ_CourseSchedule UNIQUE (CourseID, DayOfWeek)   
+);   
