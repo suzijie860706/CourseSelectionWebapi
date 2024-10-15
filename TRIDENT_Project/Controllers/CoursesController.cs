@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TRIDENT_Project.Models;
 using TRIDENT_Project.Paramenters;
 using TRIDENT_Project.Services;
@@ -37,9 +38,9 @@ namespace TRIDENT_Project.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(IEnumerable<CourseViewModel>), 200)]
+        [ProducesResponseType(typeof(CourseViewModel), 200)]
         [ProducesResponseType(204)]
-        public async Task<ActionResult<IEnumerable<CourseViewModel>>> GetCourse(int id)
+        public async Task<ActionResult<CourseViewModel>> GetCourse(int id)
         {
             CourseViewModel? result = await _courseService.GetCoursesByIdAsync(id);
             if (result == null) return NoContent();
@@ -61,18 +62,14 @@ namespace TRIDENT_Project.Controllers
         {
             try
             {
-                await _courseService.UpdateCourseAsync(id, course);
+                bool succ = await _courseService.UpdateCourseAsync(id, course);
+                if (!succ) return NotFound();
+                return NoContent();
             }
             catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-
-            return NoContent();
         }
 
         /// <summary>
@@ -81,12 +78,20 @@ namespace TRIDENT_Project.Controllers
         /// <param name="courseParamenter"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(Course), 201)]
-        public async Task<ActionResult<Course>> PostCourse(CourseParamenter courseParamenter)
+        [ProducesResponseType(typeof(CourseViewModel), 201)]
+        [ProducesResponseType(409)]
+        public async Task<ActionResult<CourseViewModel>> PostCourse(CourseParamenter courseParamenter)
         {
-            Course course = await _courseService.CreateCoursesAsync(courseParamenter);
+            try
+            {
+                CourseViewModel course = await _courseService.CreateCoursesAsync(courseParamenter);
+                return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
+            }
+            catch (DbUpdateException)
+            {
+                return Conflict($"課程\"{courseParamenter.CourseName}\"已存在，重複建立");
+            }
 
-            return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
         }
 
         /// <summary>

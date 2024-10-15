@@ -34,6 +34,8 @@ namespace TRIDENT_Project.Data
             {
                 entity.ToTable("Class");
 
+                entity.HasIndex(e => new { e.CourseId, e.ProfessorId }, "IX_Class");
+
                 entity.Property(e => e.ClassId)
                     .HasColumnName("classId")
                     .HasComment("課表Id");
@@ -118,6 +120,9 @@ namespace TRIDENT_Project.Data
             modelBuilder.Entity<Course>(entity =>
             {
                 entity.ToTable("Course");
+
+                entity.HasIndex(e => e.CourseName, "IX_Course")
+                    .IsUnique();
 
                 entity.Property(e => e.CourseId)
                     .HasColumnName("courseId")

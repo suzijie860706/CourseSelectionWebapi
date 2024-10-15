@@ -39,7 +39,9 @@ namespace TRIDENT_Project.Models
                 .ForMember(u => u.CourseId, opt => opt.MapFrom(src => src.CourseId))
                 .ForMember(u => u.CourseName, opt => opt.MapFrom(src => src.CourseName))
                 .ForMember(u => u.Description, opt => opt.MapFrom(src => src.Description))
-                .ForMember(u => u.Professors, opt => opt.Ignore());
+                .ForMember(u => u.Professors, opt => opt.Ignore())
+                
+                .ReverseMap();
         }
     }
 }

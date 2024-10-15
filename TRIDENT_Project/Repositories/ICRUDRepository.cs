@@ -22,7 +22,7 @@ namespace TRIDENT_Project.Repositories
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<int> DeleteAsync(TEntity entity);
+        Task DeleteAsync(TEntity entity);
 
         /// <summary>
         /// 單一查詢

@@ -26,14 +26,14 @@ namespace TRIDENT_Project.Services
         /// <param name="id"></param>
         /// <param name="customer"></param>
         /// <returns></returns>
-        Task UpdateCourseAsync(int id, CourseUpdateParamenter customer);
+        Task<bool> UpdateCourseAsync(int id, CourseUpdateParamenter customer);
 
         /// <summary>
         /// 建立新課程
         /// </summary>
         /// <param name="courseParamenter"></param>
         /// <returns></returns>
-        Task<Course> CreateCoursesAsync(CourseParamenter courseParamenter);
+        Task<CourseViewModel> CreateCoursesAsync(CourseParamenter courseParamenter);
 
         /// <summary>
         /// 刪除課程

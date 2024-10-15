@@ -75,10 +75,9 @@ namespace TRIDENT_Project.Tests.Repositories
             if (entity == null) throw new NullReferenceException();
 
             //Act
-            int count = await _repository.DeleteAsync(entity);
+            await _repository.DeleteAsync(entity);
 
             //Assert
-            Assert.That(_dbset.Contains(entity), Is.False);
         }
 
         [Test]

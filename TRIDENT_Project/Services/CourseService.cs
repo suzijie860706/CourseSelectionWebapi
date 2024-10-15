@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Routing.Tree;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TRIDENT_Project.Models;
 using TRIDENT_Project.Paramenters;
@@ -48,8 +49,7 @@ namespace TRIDENT_Project.Services
         /// <param name="courseUpdateParamenter"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException">如果 ID 不匹配，會拋出該異常</exception>
-        /// <exception cref="KeyNotFoundException">如果找不到該課程，會拋出該異常</exception>
-        public async Task UpdateCourseAsync(int id, CourseUpdateParamenter courseUpdateParamenter)
+        public async Task<bool> UpdateCourseAsync(int id, CourseUpdateParamenter courseUpdateParamenter)
         {
             Course course = _mapper.Map<Course>(courseUpdateParamenter);
             if (id != course.CourseId)
@@ -57,11 +57,11 @@ namespace TRIDENT_Project.Services
 
             //查詢課程是否存在，不存在則拋出 KeyNotFoundException
             Course? existingCourse = await _repository.FindByIdAsync(id);
-            if (existingCourse == null)
-                throw new KeyNotFoundException($"Course ID:{id} was not found");
+            if (existingCourse == null) return false;
 
             //更新課程
             await _repository.UpdateAsync(course);
+            return true;
         }
 
         /// <summary>
@@ -69,11 +69,13 @@ namespace TRIDENT_Project.Services
         /// </summary>
         /// <param name="courseParamenter"></param>
         /// <returns></returns>
-        public async Task<Course> CreateCoursesAsync(CourseParamenter courseParamenter)
+        public async Task<CourseViewModel> CreateCoursesAsync(CourseParamenter courseParamenter)
         {
             Course course = _mapper.Map<Course>(courseParamenter);
             Course createdCourse = await _repository.CreateAsync(course);
-            return createdCourse;
+            CourseViewModel result = _mapper.Map<CourseViewModel>(createdCourse);
+
+            return result;
         }
 
 

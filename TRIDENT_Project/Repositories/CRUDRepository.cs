@@ -14,6 +14,7 @@ namespace TRIDENT_Project.Repositories
     {
         private readonly TContext _context;
         private readonly DbSet<TEntity> _dbSet;
+        //TODO Logger
 
         public CRUDRepository(TContext context)
         {
@@ -26,22 +27,22 @@ namespace TRIDENT_Project.Repositories
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        /// <exception cref="KeyNotFoundException">資料庫更新錯誤</exception>
-        /// <exception cref="ValidationException">驗證錯誤</exception>
-        /// <exception cref="OperationCanceledException">執行被中斷</exception>
+        /// <exception cref="DbUpdateException"></exception>
         public async Task<TEntity> CreateAsync(TEntity entity)
         {
             try
             {
-                throw new Exception();
                 var reslut = await _dbSet.AddAsync(entity);
                 await _context.SaveChangesAsync();
                 return reslut.Entity;
             }
-            //TODO:Logger
+            catch (DbUpdateException ex)
+            {
+                throw new DbUpdateException("新增資料重複", ex);
+            }
             catch (Exception ex)
             {
-                throw new Exception($"資料庫操作異常 {nameof(CreateAsync)} Fail", ex);
+                throw new Exception($"資料庫新增異常", ex);
             }
         }
 
@@ -57,18 +58,25 @@ namespace TRIDENT_Project.Repositories
                 _dbSet.Update(entity);
                 await _context.SaveChangesAsync();
             }
-            //TODO:Logger
             catch (Exception ex)
             {
-                throw new Exception($"資料庫操作異常 {MethodBase.GetCurrentMethod()?.Name} Fail", ex);
+                throw new Exception($"資料庫更新異常", ex);
             }
 
         }
 
-        public async Task<int> DeleteAsync(TEntity entity)
+        public async Task DeleteAsync(TEntity entity)
         {
-            _dbSet.Remove(entity);
-            return await _context.SaveChangesAsync();
+            try
+            {
+                _dbSet.Remove(entity);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"資料庫刪除異常", ex);
+            }
+
         }
 
         public async Task<TEntity?> FindByIdAsync(int id)

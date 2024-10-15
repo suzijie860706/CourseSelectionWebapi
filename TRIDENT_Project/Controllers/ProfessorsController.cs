@@ -53,6 +53,7 @@ namespace TRIDENT_Project.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(Professor), 201)]
+        [ProducesResponseType(409)]
         public async Task<ActionResult<Professor>> PostProfessor(ProfessorParamenter professorParamenter)
         {
             Professor professor = await _professorsService.CreateProfessorAsync(professorParamenter);
