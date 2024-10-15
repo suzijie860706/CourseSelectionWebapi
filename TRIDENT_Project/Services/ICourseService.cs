@@ -1,5 +1,6 @@
 ﻿using TRIDENT_Project.Models;
 using TRIDENT_Project.Paramenters;
+using TRIDENT_Project.ViewModels;
 
 namespace TRIDENT_Project.Services
 {
@@ -10,14 +11,14 @@ namespace TRIDENT_Project.Services
         /// 課程列表
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<Course>> GetAllCoursesAsync();
+        Task<List<CourseViewModel>> GetAllCoursesAsync();
 
         /// <summary>
         /// 取得特定課程
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<Course?> GetCoursesByIdAsync(int id);
+        Task<CourseViewModel?> GetCoursesByIdAsync(int id);
 
         /// <summary>
         /// 更新課程內容
@@ -25,7 +26,7 @@ namespace TRIDENT_Project.Services
         /// <param name="id"></param>
         /// <param name="customer"></param>
         /// <returns></returns>
-        Task<bool> UpdateCourseAsync(int id, Course customer);
+        Task UpdateCourseAsync(int id, CourseUpdateParamenter customer);
 
         /// <summary>
         /// 建立新課程

@@ -22,6 +22,7 @@ builder.Services.AddDbContext<StudentEnrollmentSystemContext>(option =>
 builder.Services.AddScoped<ICRUDRepository<Course>, CRUDRepository<Course, StudentEnrollmentSystemContext>>();
 builder.Services.AddScoped<ICRUDRepository<Professor>, CRUDRepository<Professor, StudentEnrollmentSystemContext>>();
 builder.Services.AddScoped<IProfessorRepository, ProfessorRepository>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddTransient<IValidationService, ValidationService>();
 
 //Controller Layer
@@ -74,8 +75,16 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
 
 // 驗證 AutoMapper 配置
-var mapper = app.Services.GetRequiredService<IMapper>();
-mapper.ConfigurationProvider.AssertConfigurationIsValid();
+try
+{
+    var mapper = app.Services.GetRequiredService<IMapper>();
+    mapper.ConfigurationProvider.AssertConfigurationIsValid();
+}
+catch (Exception ex)
+{
+    throw new Exception("AutoMapper設定錯誤", ex);
+}
+
 
 // Configure the HTTP request pipeline.
 

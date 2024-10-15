@@ -8,7 +8,7 @@ namespace TRIDENT_Project.Models
         /// <summary>
         /// 唯一識別碼
         /// </summary>
-        public int Id { get; set; }
+        public int StudentCourseId { get; set; }
         /// <summary>
         /// 學生Id
         /// </summary>
@@ -16,13 +16,17 @@ namespace TRIDENT_Project.Models
         /// <summary>
         /// 課程Id
         /// </summary>
-        public int CourseId { get; set; }
+        public int ClassId { get; set; }
+        /// <summary>
+        /// 教授Id
+        /// </summary>
+        public int ProfessorId { get; set; }
         /// <summary>
         /// 選課日期
         /// </summary>
         public DateTime EnrollDate { get; set; }
 
-        public virtual Course Course { get; set; } = null!;
+        public virtual Class Class { get; set; } = null!;
         public virtual Student Student { get; set; } = null!;
     }
 }

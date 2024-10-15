@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using TRIDENT_Project.Models;
 using TRIDENT_Project.Paramenters;
 using TRIDENT_Project.Services;
+using TRIDENT_Project.ViewModels;
 
 namespace TRIDENT_Project.Controllers
 {
@@ -24,10 +25,11 @@ namespace TRIDENT_Project.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Course>), 200)]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+        [ProducesResponseType(typeof(IEnumerable<CourseViewModel>), 200)]
+        public async Task<ActionResult<IEnumerable<CourseViewModel>>> GetCourses()
         {
-            return Ok(await _courseService.GetAllCoursesAsync());
+            var result = await _courseService.GetAllCoursesAsync();
+            return Ok(result);
         }
 
         /// <summary>
@@ -35,13 +37,13 @@ namespace TRIDENT_Project.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(IEnumerable<Course>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<CourseViewModel>), 200)]
         [ProducesResponseType(204)]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourse(int id)
+        public async Task<ActionResult<IEnumerable<CourseViewModel>>> GetCourse(int id)
         {
-            Course? courses = await _courseService.GetCoursesByIdAsync(id);
-            if (courses == null) return NoContent();
-            return Ok(courses);
+            CourseViewModel? result = await _courseService.GetCoursesByIdAsync(id);
+            if (result == null) return NoContent();
+            return Ok(result);
         }
 
 
@@ -55,15 +57,11 @@ namespace TRIDENT_Project.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> PutCourse(int id, Course course)
+        public async Task<IActionResult> PutCourse(int id, CourseUpdateParamenter course)
         {
             try
             {
-                var result = await _courseService.UpdateCourseAsync(id, course);
-                if (!result)
-                {
-                    return Problem("Update Failed");
-                }
+                await _courseService.UpdateCourseAsync(id, course);
             }
             catch (KeyNotFoundException ex)
             {
@@ -88,7 +86,7 @@ namespace TRIDENT_Project.Controllers
         {
             Course course = await _courseService.CreateCoursesAsync(courseParamenter);
 
-            return CreatedAtAction("GetCourse", new { id = course.Id }, course);
+            return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
         }
 
         /// <summary>

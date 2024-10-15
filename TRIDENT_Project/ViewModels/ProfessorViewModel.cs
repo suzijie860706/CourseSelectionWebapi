@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Text.Json.Serialization;
 using TRIDENT_Project.Models;
 using TRIDENT_Project.ViewModel;
 
@@ -8,23 +9,28 @@ namespace TRIDENT_Project.ViewModels
     {
         public ProfessorViewModel()
         {
-            Courses = new HashSet<CourseViewModel>();
+            Classes = new HashSet<Class>();
         }
 
         /// <summary>
-        /// 唯一識別碼
+        /// 教授Id
         /// </summary>
-        public int Id { get; set; }
+        public int professorId { get; set; }
         /// <summary>
         /// 教授姓名
         /// </summary>
-        public string Name { get; set; } = null!;
+        public string? ProfessorName { get; set; }
         /// <summary>
         /// 電子郵件地址
         /// </summary>
         public string? Email { get; set; }
+        /// <summary>
+        /// 班級名稱
+        /// </summary>
+        public string? ClassName { get; set; }
 
-        public virtual ICollection<CourseViewModel> Courses { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Class> Classes { get; set; }
     }
 
     /// <summary>
@@ -35,10 +41,11 @@ namespace TRIDENT_Project.ViewModels
         public ProfessorParamenterProfile()
         {
             CreateMap<Professor, ProfessorViewModel>()
-                .ForMember(u => u.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(u => u.professorId, opt => opt.MapFrom(src => src.ProfessorId))
                 .ForMember(u => u.Email, opt => opt.MapFrom(src => src.Email))
-                .ForMember(u => u.Name, opt => opt.MapFrom(src => src.Name))
-                .ForMember(u => u.Courses, opt => opt.MapFrom(src => src.Courses));
+                .ForMember(u => u.ProfessorName, opt => opt.MapFrom(src => src.Name))
+                .ForMember(u => u.Classes, opt => opt.MapFrom(src => src.Classes))
+                .ForMember(u => u.ClassName, opt => opt.Ignore());
         }
     }
 }

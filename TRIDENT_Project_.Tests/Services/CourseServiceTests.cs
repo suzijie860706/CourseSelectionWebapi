@@ -12,6 +12,7 @@ namespace TRIDENT_Project.Tests.Services
     public class CourseServiceTests
     {
         private ICRUDRepository<Course> _repository;
+        private ICourseRepository _courseRepository;
         private CourseService _courseService;
         private IMapper _mapper;
 
@@ -19,7 +20,8 @@ namespace TRIDENT_Project.Tests.Services
         public void SetUp()
         {
             _repository = Substitute.For<ICRUDRepository<Course>>();
-            _courseService = new CourseService(_repository, _mapper);
+            _courseRepository = Substitute.For<ICourseRepository>();
+            _courseService = new CourseService(_repository, _mapper,_courseRepository);
 
             MapperConfiguration config = new MapperConfiguration(cfg =>
             {
@@ -37,26 +39,23 @@ namespace TRIDENT_Project.Tests.Services
         }
 
         [Test]
-        [TestCase(1 , true)]
-        [TestCase(0, false)]
-        public async Task UpdateCourseAsync_WhenCalled_ReturnsExpectedResult(int affectRow, bool output)
+        public async Task UpdateCourseAsync_WhenCalled_Returns()
         {
             //Arrange
             int id = 1;
-            Course course = new Course()
+            CourseUpdateParamenter course = new CourseUpdateParamenter()
             {
-                Id = 1,
+                CourseId = 1,
                 CourseName = "國文",
-                ProfessorId = 3,
             };
-            _repository.FindByIdAsync(id).Returns(course);
-            _repository.UpdateAsync(Arg.Any<Course>()).Returns(affectRow);
+
+            _repository.FindByIdAsync(id).Returns(new Course());
+            await _repository.UpdateAsync(Arg.Any<Course>());
 
             //Act
-            bool result = await _courseService.UpdateCourseAsync(id, course);
+            await _courseService.UpdateCourseAsync(id, course);
 
             //Assert
-            Assert.That(result, Is.EqualTo(output));
         }
 
         [Test]
@@ -64,16 +63,15 @@ namespace TRIDENT_Project.Tests.Services
         {
             //Arrange
             int id = 2;
-            Course course = new Course()
+            CourseUpdateParamenter courseUpdateParamenter = new CourseUpdateParamenter()
             {
-                Id = 1,
+                CourseId = 1,
                 CourseName = "國文",
-                ProfessorId = 3,
             };
 
             // Act & Assert
             var ex = Assert.ThrowsAsync<ArgumentException>(async () =>
-                await _courseService.UpdateCourseAsync(id, course), "Course ID mismatch");
+                await _courseService.UpdateCourseAsync(id, courseUpdateParamenter), "Course ID mismatch");
         }
 
         [Test]
@@ -81,11 +79,10 @@ namespace TRIDENT_Project.Tests.Services
         {
             //Arrange
             int id = 1;
-            Course course = new Course()
+            CourseUpdateParamenter course = new CourseUpdateParamenter()
             {
-                Id = 1,
+                CourseId = 1,
                 CourseName = "國文",
-                ProfessorId = 3,
             };
             _repository.FindByIdAsync(id).Returns((Course?)null);
 

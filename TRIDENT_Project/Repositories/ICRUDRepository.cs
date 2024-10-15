@@ -8,14 +8,14 @@ namespace TRIDENT_Project.Repositories
         /// 新增
         /// </summary>
         /// <param name="entity"></param>
-        /// <returns>Id</returns>
-        Task<TEntity?> CreateAsync(TEntity entity);
+        /// <returns></returns>
+        Task<TEntity> CreateAsync(TEntity entity);
 
         /// <summary>
         /// 修改
         /// </summary>
         /// <param name="entity"></param>
-        Task<int> UpdateAsync(TEntity entity);
+        Task UpdateAsync(TEntity entity);
 
         /// <summary>
         /// 刪除

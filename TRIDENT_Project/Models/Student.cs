@@ -13,7 +13,7 @@ namespace TRIDENT_Project.Models
         /// <summary>
         /// 唯一識別碼
         /// </summary>
-        public int Id { get; set; }
+        public int StudentId { get; set; }
         /// <summary>
         /// 學生姓名
         /// </summary>

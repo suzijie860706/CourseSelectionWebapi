@@ -7,13 +7,13 @@ namespace TRIDENT_Project.Models
     {
         public Professor()
         {
-            Courses = new HashSet<Course>();
+            Classes = new HashSet<Class>();
         }
 
         /// <summary>
         /// 唯一識別碼
         /// </summary>
-        public int Id { get; set; }
+        public int ProfessorId { get; set; }
         /// <summary>
         /// 教授姓名
         /// </summary>
@@ -31,6 +31,6 @@ namespace TRIDENT_Project.Models
         /// </summary>
         public DateTime UpdatedDate { get; set; }
 
-        public virtual ICollection<Course> Courses { get; set; }
+        public virtual ICollection<Class> Classes { get; set; }
     }
 }

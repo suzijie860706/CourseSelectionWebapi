@@ -3,6 +3,7 @@ using TRIDENT_Project.Controllers;
 using TRIDENT_Project.Services;
 using TRIDENT_Project.Models;
 using Microsoft.AspNetCore.Mvc;
+using TRIDENT_Project.Paramenters;
 
 namespace TRIDENT_Project.Tests.Controllers
 {
@@ -24,16 +25,15 @@ namespace TRIDENT_Project.Tests.Controllers
         public async Task PutCourse_WhenCalled_Returns204()
         {
             //Arrange
-            Course course = new Course()
+            CourseUpdateParamenter courseUpdateParamenter = new CourseUpdateParamenter()
             {
-                Id = 1,
+                CourseId = 1,
                 CourseName = "國文",
-                ProfessorId = 3,
             };
-            _courseService.UpdateCourseAsync(1, course).Returns(true);
+            await _courseService.UpdateCourseAsync(1, courseUpdateParamenter);
 
             //Act
-            var actionResult = await _controller.PutCourse(1, course) as NoContentResult;
+            var actionResult = await _controller.PutCourse(1, courseUpdateParamenter) as NoContentResult;
 
             //Assert
             Assert.That(actionResult, Is.Not.Null);
@@ -44,16 +44,15 @@ namespace TRIDENT_Project.Tests.Controllers
         public async Task PutCourse_WhenCalled_Returns500()
         {
             //Arrange
-            Course course = new Course()
+            CourseUpdateParamenter courseUpdateParamenter = new CourseUpdateParamenter()
             {
-                Id = 1,
+                CourseId = 1,
                 CourseName = "國文",
-                ProfessorId = 3,
             };
-            _courseService.UpdateCourseAsync(1, course).Returns(false);
+            await _courseService.UpdateCourseAsync(1, courseUpdateParamenter);
 
             //Act
-            var actionResult = await _controller.PutCourse(1, course) as ObjectResult;
+            var actionResult = await _controller.PutCourse(1, courseUpdateParamenter) as ObjectResult;
 
             //Assert
             Assert.That(actionResult, Is.Not.Null);

@@ -33,12 +33,12 @@ namespace TRIDENT_Project.ViewModel
         public ProfessorParamenterProfile()
         {
             CreateMap<ProfessorParamenter, Professor>()
-                .ForMember(u => u.Id, opt => opt.Ignore())
+                .ForMember(u => u.ProfessorId, opt => opt.Ignore())
                 .ForMember(u => u.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(u => u.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(u => u.UpdatedDate, opt => opt.MapFrom(_ => DateTime.Now))
                 .ForMember(u => u.CreatedDate, opt => opt.MapFrom(_ => DateTime.Now))
-                .ForMember(u => u.Courses, opt => opt.Ignore());
+                .ForMember(u => u.Classes, opt => opt.Ignore());
         }
     }
 }

@@ -16,8 +16,8 @@ namespace TRIDENT_Project.Repositories
         public async Task<Professor?> GetProfessorsWithCourseAsync(int professorId)
         {
             return await _context.Professors
-           .Include(p => p.Courses)
-           .Where(c => c.Id == professorId).FirstOrDefaultAsync();
+           .Include(p => p.Classes)
+           .Where(c => c.ProfessorId == professorId).FirstOrDefaultAsync();
         }
     }
 }

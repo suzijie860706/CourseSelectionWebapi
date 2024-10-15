@@ -9,9 +9,8 @@ namespace TRIDENT_Project.Tests.Repositories
         {
             _dbset.Add(new Course
             {
-                Id = 1,
+                CourseId = 1,
                 CourseName = "數學",
-                ProfessorId = 1,
                 UpdatedDate = DateTime.Now,
                 CreatedDate = DateTime.Now,
             });

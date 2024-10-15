@@ -56,7 +56,7 @@ namespace TRIDENT_Project.Controllers
         public async Task<ActionResult<Professor>> PostProfessor(ProfessorParamenter professorParamenter)
         {
             Professor professor = await _professorsService.CreateProfessorAsync(professorParamenter);
-            return CreatedAtAction("GetCoursesByProfessorId", new { id = professor.Id }, professor);
+            return CreatedAtAction("GetCoursesByProfessorId", new { id = professor.ProfessorId }, professor);
         }
     }
 }

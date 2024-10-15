@@ -12,7 +12,6 @@ namespace TRIDENT_Project.Common
             return new CourseParamenter
             {
                 CourseName = "國文",
-                ProfessorId = 1
             };
         }
     }
@@ -23,9 +22,8 @@ namespace TRIDENT_Project.Common
         {
             return new Course
             {
-                Id = 1,
+                CourseId = 1,
                 CourseName = "國文",
-                ProfessorId = 1,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
             };
@@ -50,7 +48,7 @@ namespace TRIDENT_Project.Common
         {
             return new Professor
             {
-                Id = 1,
+                ProfessorId = 1,
                 Email = "asdasd@gamil.com",
                 Name = "王教授",
                 CreatedDate = DateTime.Now,
