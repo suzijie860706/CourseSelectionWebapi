@@ -63,13 +63,13 @@ namespace TRIDENT_Project.Controllers
             {
                 await _courseService.UpdateCourseAsync(id, course);
             }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
             catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
 
             return NoContent();

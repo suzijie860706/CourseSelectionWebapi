@@ -33,22 +33,15 @@ namespace TRIDENT_Project.Repositories
         {
             try
             {
+                throw new Exception();
                 var reslut = await _dbSet.AddAsync(entity);
                 await _context.SaveChangesAsync();
                 return reslut.Entity;
             }
             //TODO:Logger
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
-                throw new DbUpdateException("資料庫更新錯誤", ex);
-            }
-            catch (ValidationException ex)
-            {
-                throw new DbUpdateException("驗證錯誤", ex);
-            }
-            catch (OperationCanceledException ex)
-            {
-                throw new DbUpdateException("執行被中斷", ex);
+                throw new Exception($"資料庫操作異常 {nameof(CreateAsync)} Fail", ex);
             }
         }
 
@@ -57,9 +50,6 @@ namespace TRIDENT_Project.Repositories
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        /// <exception cref="DbUpdateConcurrencyException">儲存到資料庫時資料已被修改</exception>
-        /// <exception cref="DbUpdateException">資料庫更新錯誤</exception>
-        /// <exception cref="OperationCanceledException">執行被中斷</exception>
         public async Task UpdateAsync(TEntity entity)
         {
             try
@@ -68,17 +58,9 @@ namespace TRIDENT_Project.Repositories
                 await _context.SaveChangesAsync();
             }
             //TODO:Logger
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                throw; //儲存到資料庫時資料已被修改
-            }
-            catch (DbUpdateException)
-            {
-                throw; // 資料庫更新錯誤
-            }
-            catch (OperationCanceledException)
-            {
-                throw; //執行被中斷
+                throw new Exception($"資料庫操作異常 {MethodBase.GetCurrentMethod()?.Name} Fail", ex);
             }
 
         }

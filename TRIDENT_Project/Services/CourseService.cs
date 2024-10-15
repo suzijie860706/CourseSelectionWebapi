@@ -53,7 +53,7 @@ namespace TRIDENT_Project.Services
         {
             Course course = _mapper.Map<Course>(courseUpdateParamenter);
             if (id != course.CourseId)
-                throw new ArgumentException("Course ID mismatch");
+                throw new ArgumentException("RouterId not macth courseId");
 
             //查詢課程是否存在，不存在則拋出 KeyNotFoundException
             Course? existingCourse = await _repository.FindByIdAsync(id);

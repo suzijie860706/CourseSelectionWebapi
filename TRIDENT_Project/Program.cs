@@ -7,6 +7,8 @@ using TRIDENT_Project.Data;
 using TRIDENT_Project.Models;
 using TRIDENT_Project.Repositories;
 using TRIDENT_Project.Services;
+using TRIDENT_Project.Middleware;
+using TRIDENT_Project.Ｍiddlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -84,6 +86,9 @@ catch (Exception ex)
 {
     throw new Exception("AutoMapper設定錯誤", ex);
 }
+
+//自定義Middleware
+app.UseErrorHandling();
 
 
 // Configure the HTTP request pipeline.
