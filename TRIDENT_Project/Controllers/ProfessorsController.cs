@@ -37,11 +37,11 @@ namespace TRIDENT_Project.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ProfessorViewModel), 200)]
+        [ProducesResponseType(typeof(ProfessorWithClassViewModel), 200)]
         [ProducesResponseType(204)]
-        public async Task<ActionResult<ProfessorViewModel>> GetCoursesByProfessorId(int id)
+        public async Task<ActionResult<ProfessorWithClassViewModel>> GetCoursesByProfessorId(int id)
         {
-            ProfessorViewModel? professorCourse = await _professorsService.GetProfessorsWithCourseAsync(id);
+            ProfessorWithClassViewModel? professorCourse = await _professorsService.GetProfessorsWithCourseAsync(id);
             if (professorCourse == null) return NoContent();
             return Ok(professorCourse);
         }

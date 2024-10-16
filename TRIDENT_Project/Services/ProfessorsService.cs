@@ -35,10 +35,10 @@ namespace TRIDENT_Project.Services
         /// </summary>
         /// <param name="professorId"></param>
         /// <returns></returns>
-        public async Task<ProfessorViewModel?> GetProfessorsWithCourseAsync(int professorId)
+        public async Task<ProfessorWithClassViewModel?> GetProfessorsWithCourseAsync(int professorId)
         {
             Professor? professor = await _professorRepository.GetProfessorsWithCourseAsync(professorId);
-            ProfessorViewModel? professorViewModel = _mapper.Map<ProfessorViewModel>(professor);
+            ProfessorWithClassViewModel? professorViewModel = _mapper.Map<ProfessorWithClassViewModel>(professor);
             return professorViewModel;
         }
 

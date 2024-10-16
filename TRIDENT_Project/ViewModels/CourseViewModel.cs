@@ -11,7 +11,7 @@ namespace TRIDENT_Project.Models
     {
         public CourseViewModel()
         {
-            Professors = new HashSet<ProfessorViewModel>();
+            Professors = new HashSet<ProfessorWithClassViewModel>();
         }
         /// <summary>課程Id</summary>
         public int CourseId { get; set; }
@@ -25,7 +25,7 @@ namespace TRIDENT_Project.Models
         /// <summary>
         /// 授課教授Id
         /// </summary>
-        public IEnumerable<ProfessorViewModel> Professors { get; set; }
+        public IEnumerable<ProfessorWithClassViewModel> Professors { get; set; }
     }
 
     /// <summary>
@@ -36,11 +36,10 @@ namespace TRIDENT_Project.Models
         public CourseViewModelProfile()
         {
             CreateMap<Course, CourseViewModel>()
-                .ForMember(u => u.CourseId, opt => opt.MapFrom(src => src.CourseId))
-                .ForMember(u => u.CourseName, opt => opt.MapFrom(src => src.CourseName))
-                .ForMember(u => u.Description, opt => opt.MapFrom(src => src.Description))
-                .ForMember(u => u.Professors, opt => opt.Ignore())
-                
+                .ForMember(dest => dest.CourseId, src => src.MapFrom(src => src.CourseId))
+                .ForMember(dest => dest.CourseName, src => src.MapFrom(src => src.CourseName))
+                .ForMember(dest => dest.Description, src => src.MapFrom(src => src.Description))
+                .ForMember(dest => dest.Professors, src => src.Ignore())
                 .ReverseMap();
         }
     }

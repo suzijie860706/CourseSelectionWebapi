@@ -51,16 +51,17 @@ namespace TRIDENT_Project.Services
         /// <exception cref="ArgumentException">如果 ID 不匹配，會拋出該異常</exception>
         public async Task<bool> UpdateCourseAsync(int id, CourseUpdateParamenter courseUpdateParamenter)
         {
-            Course course = _mapper.Map<Course>(courseUpdateParamenter);
-            if (id != course.CourseId)
+            if (id != courseUpdateParamenter.CourseId)
                 throw new ArgumentException("RouterId not macth courseId");
 
             //查詢課程是否存在，不存在則拋出 KeyNotFoundException
             Course? existingCourse = await _repository.FindByIdAsync(id);
             if (existingCourse == null) return false;
 
+            existingCourse = _mapper.Map(courseUpdateParamenter, existingCourse);
+
             //更新課程
-            await _repository.UpdateAsync(course);
+            await _repository.UpdateAsync(existingCourse);
             return true;
         }
 

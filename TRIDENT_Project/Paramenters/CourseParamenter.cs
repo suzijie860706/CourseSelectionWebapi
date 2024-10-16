@@ -27,14 +27,14 @@ namespace TRIDENT_Project.Paramenters
         public CourseParamenterProfile()
         {
             CreateMap<CourseParamenter, Course>()
-                .ForMember(u => u.CourseId, opt => opt.Ignore())
-                .ForMember(u => u.CourseName, opt => opt.MapFrom(src => src.CourseName))
-                .ForMember(u => u.Description, opt => opt.MapFrom(src => src.Description))
-                .ForMember(u => u.CreatedDate, opt => opt.MapFrom(_ => DateTime.Now))
-                .ForMember(u => u.UpdatedDate, opt => opt.MapFrom(_ => DateTime.Now))
-                .ForMember(u => u.CreatedDate, opt => opt.Ignore())
-                .ForMember(u => u.ClassSchedules, opt => opt.Ignore())
-                .ForMember(u => u.Classes, opt => opt.Ignore());
+                .ForMember(dest => dest.CourseId, src =>  src.Ignore())
+                .ForMember(dest => dest.CourseName, src => src.MapFrom(src => src.CourseName))
+                .ForMember(dest => dest.Description, src => src.MapFrom(src => src.Description))
+                .ForMember(dest => dest.CreatedDate, src => src.MapFrom(_ => DateTime.Now))
+                .ForMember(dest => dest.UpdatedDate, src => src.MapFrom(_ => DateTime.Now))
+                .ForMember(dest => dest.CreatedDate, src => src.Ignore())
+                .ForMember(dest => dest.ClassSchedules, src => src.Ignore())
+                .ForMember(dest => dest.Classes, src => src.Ignore());
         }
     }
 }

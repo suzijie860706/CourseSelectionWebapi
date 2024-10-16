@@ -5,9 +5,9 @@ using TRIDENT_Project.ViewModel;
 
 namespace TRIDENT_Project.ViewModels
 {
-    public class ProfessorViewModel
+    public class ProfessorWithClassViewModel
     {
-        public ProfessorViewModel()
+        public ProfessorWithClassViewModel()
         {
             Classes = new HashSet<Class>();
         }
@@ -24,10 +24,6 @@ namespace TRIDENT_Project.ViewModels
         /// 電子郵件地址
         /// </summary>
         public string? Email { get; set; }
-        /// <summary>
-        /// 班級名稱
-        /// </summary>
-        public string? ClassName { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<Class> Classes { get; set; }
@@ -40,12 +36,11 @@ namespace TRIDENT_Project.ViewModels
     {
         public ProfessorParamenterProfile()
         {
-            CreateMap<Professor, ProfessorViewModel>()
+            CreateMap<Professor, ProfessorWithClassViewModel>()
                 .ForMember(u => u.professorId, opt => opt.MapFrom(src => src.ProfessorId))
                 .ForMember(u => u.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(u => u.ProfessorName, opt => opt.MapFrom(src => src.Name))
-                .ForMember(u => u.Classes, opt => opt.MapFrom(src => src.Classes))
-                .ForMember(u => u.ClassName, opt => opt.Ignore());
+                .ForMember(u => u.Classes, opt => opt.MapFrom(src => src.Classes));
         }
     }
 }

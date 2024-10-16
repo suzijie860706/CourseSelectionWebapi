@@ -17,7 +17,7 @@ namespace TRIDENT_Project.Services
         /// </summary>
         /// <param name="professorId"></param>
         /// <returns></returns>
-        Task<ProfessorViewModel?> GetProfessorsWithCourseAsync(int professorId);
+        Task<ProfessorWithClassViewModel?> GetProfessorsWithCourseAsync(int professorId);
 
         /// <summary>
         /// 建立新講師

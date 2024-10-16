@@ -26,12 +26,11 @@ namespace TRIDENT_Project.Repositories
                 {
                     CourseId = c.CourseId,
                     CourseName = c.CourseName,
-                    Professors = c.Classes.Select(cls => new ProfessorViewModel
+                    Professors = c.Classes.Select(cls => new ProfessorWithClassViewModel
                     {
                         professorId = cls.ProfessorId,
                         ProfessorName = cls.Professor.Name,
                         Email = cls.Professor.Email,
-                        ClassName = cls.ClassName
                     })
                 }).ToListAsync();
 
@@ -46,12 +45,11 @@ namespace TRIDENT_Project.Repositories
                 {
                     CourseId = c.CourseId,
                     CourseName = c.CourseName,
-                    Professors = c.Classes.Select(cls => new ProfessorViewModel
+                    Professors = c.Classes.Select(cls => new ProfessorWithClassViewModel
                     {
                         professorId = cls.ProfessorId,
                         ProfessorName = cls.Professor.Name,
                         Email = cls.Professor.Email,
-                        ClassName = cls.ClassName
                     })
                 }).FirstOrDefaultAsync();
 
